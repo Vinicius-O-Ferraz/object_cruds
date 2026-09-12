@@ -266,4 +266,52 @@ function validarCaixa(caixa_id) {
 
 // consultarCaixas();
 
-consultarCaixasporPallet('200000000000001');
+// consultarCaixasporPallet('200000000000001');
+
+async function consultarRotas() {
+    const { data, error } = await supabase
+        .from('rota')
+        .select('*');
+}
+
+
+async function consultarRota(id_rota) {
+    const { data, error } = await supabase
+        .from('rota')
+        .select('*')
+        .eq('id_rota', id_rota);
+}
+
+async function criarRota(id_rota, pontos) {
+
+    const { data, error } = await supabase
+        .from('rota')
+        .insert({
+            // id_rota: validarRota(id_rota)
+            id_rota: id_rota,
+            pontos: pontos
+        })
+        .select();
+
+    if (error) {
+        console.error('Erro ao criar rota:', error);
+        return;
+    }
+
+    console.log('Rota criada com sucesso:');
+    console.table(data);
+}
+
+async function removerRota(id_rota) {
+    const { data, error } = await supabase
+        .from('rota')
+        .delete()
+        .eq('id_rota', id_rota).select();
+}
+
+
+
+criarRota('ROTA001', ['PONTO1', 'PONTO2', 'PONTO3']);
+consultarRota('ROTA001');
+removerRota('ROTA001');
+consultarRotas('ROTA001');
